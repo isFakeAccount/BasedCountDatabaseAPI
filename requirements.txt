@@ -1,2 +1,8 @@
+async-lru
+black
 fastapi
+motor
+motor-types
+mypy
+ruff
 uvicorn[standard]

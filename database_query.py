@@ -40,6 +40,7 @@ async def get_pills(user_name: str, limit: int, databased: AsyncIOMotorDatabase)
     else:
         return {"user_name": user_name, "pills": []}
 
+
 @alru_cache(ttl=60, maxsize=128)
 async def get_based_count_and_pills(user_name: str, limit: int, databased: AsyncIOMotorDatabase) -> dict[str, list[Pill] | int | str]:
     users_collection = await get_mongo_collection(collection_name="users", databased=databased)
@@ -47,6 +48,6 @@ async def get_based_count_and_pills(user_name: str, limit: int, databased: Async
 
     if profile is not None:
         pills_data = profile["pills"][-limit:]
-        return {"user_name": user_name, "pills": [Pill.from_data(pill=pill) for pill in reversed(pills_data)], "based_count": profile["count"]}
+        return {"user_name": user_name, "based_count": profile["count"], "pills": [Pill.from_data(pill=pill) for pill in reversed(pills_data)]}
     else:
-        return {"user_name": user_name, "pills": []}
+        return {"user_name": user_name, "based_count": 0, "pills": []}
